@@ -13,11 +13,17 @@ playBtn.addEventListener('click', () => {
 });
 
 const wWidth = window.innerWidth;
+const hWidth = window.innerHeight;
 document.addEventListener('mousemove', evt => {
-	const posRatio = evt.clientX / wWidth;
-	const minBpm = 30;
-	const maxBpm = 240;
+	const wPosRatio = evt.clientX / wWidth;
+	const hPosRatio = evt.clientY / hWidth;
+	const minBpm = 60;
+	const maxBpm = 240 - minBpm;
 
-	const bpm = maxBpm * posRatio;
+	const bpm = maxBpm * wPosRatio + minBpm;
+
 	Audio.changeBpm(bpm);
+	Audio.changeVolume(hPosRatio);
+	Audio.changeReverb(hPosRatio);
+	// Audio.changeDampening(evt.clientX);
 });

@@ -6,7 +6,7 @@ import { getRandomItemFromArr } from './helpers';
 // From Rampsophone
 const melody = {
 	key: getRandomItemFromArr('c,c#,d,d#,e,f,f#,g,g#,a,bb,b'.split(',')),
-	octave: getRandomItemFromArr('2,3,4,5,6'.split(',')),
+	octave: getRandomItemFromArr('2,3,4'.split(',')),
 	mode: getRandomItemFromArr(
 		'major,minor,harmonicminor,blues,chromatic,mixolydian'.split(',')
 	),
@@ -27,18 +27,30 @@ class Melody {
 		// NOTE: Maybe add modes?
 		this.bpmMode = false;
 
-		// Binding the methods
+		/*==========================
+		=== Nodes initialization
+		===========================*/
+		this.freeverb = new Tone.Freeverb(0).toMaster();
+		this.masterGain = new Tone.Gain();
+
+		/*==========================
+		=== Bindings
+		===========================*/
 		this.generateMelody = this.generateMelody.bind(this);
 		this.toggleAudio = this.toggleAudio.bind(this);
 	}
 
 	init() {
 		this.synth = new Tone.Synth();
-		this.synth.toMaster();
+		// this.synth.toMaster();
+		this.synth.connect(this.freeverb);
+		this.freeverb.connect(this.masterGain);
+
+		this.masterGain.toMaster();
 
 		this.sequence = new Tone.Pattern(
 			(time, note) => {
-				this.synth.triggerAttackRelease(note, '8n', time);
+				this.synth.triggerAttackRelease(note, '8n', time + 0.05);
 			},
 			[],
 			'upDown'
