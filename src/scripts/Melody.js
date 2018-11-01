@@ -24,6 +24,9 @@ class Melody {
 
 		this.isPlaying = false;
 
+		// NOTE: Maybe add modes?
+		this.bpmMode = false;
+
 		// Binding the methods
 		this.generateMelody = this.generateMelody.bind(this);
 		this.toggleAudio = this.toggleAudio.bind(this);
